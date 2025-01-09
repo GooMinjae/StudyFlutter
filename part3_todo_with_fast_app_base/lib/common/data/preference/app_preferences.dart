@@ -48,6 +48,7 @@ class AppPreferences {
           return _prefs.setString(key, (value as DateTime).toIso8601String());
         default:
           if (value is Enum) {
+            // ignore: deprecated_member_use
             return _prefs.setString(key, describeEnum(value));
           } else {
             throw Exception('$T 타입에 대한 저장 transform 함수를 추가 해주세요.');
@@ -69,6 +70,7 @@ class AppPreferences {
           return _prefs.setString(key, (value as DateTime).toIso8601String());
         default:
           if (value is Enum) {
+            // ignore: deprecated_member_use
             return _prefs.setString(key, describeEnum(value));
           } else {
             throw Exception('$T 타입에 대한 저장 transform 함수를 추가 해주세요.');
