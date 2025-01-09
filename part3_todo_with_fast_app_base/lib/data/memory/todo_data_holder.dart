@@ -1,28 +1,13 @@
-import 'package:fast_app_base/data/memory/todo_data_notifier.dart';
 import 'package:fast_app_base/data/memory/todo_status.dart';
 import 'package:fast_app_base/screen/dialog/d_confirm.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 
 import '../../screen/main/write/d_write_todo.dart';
 import 'vo_todo.dart';
 
-class TodoDataHolder extends InheritedWidget {
-  final TodoDataNotifier notifier;
-
-  const TodoDataHolder(
-      {super.key, required super.child, required this.notifier});
-
-  @override
-  bool updateShouldNotify(covariant InheritedWidget oldWidget) {
-    // TODO: implement updateShouldNotify
-    return true;
-  }
-
-  static TodoDataHolder _of(BuildContext context) {
-    TodoDataHolder inherited =
-        (context.dependOnInheritedWidgetOfExactType<TodoDataHolder>())!;
-    return inherited;
-  }
+class TodoDataHolder extends GetxController {
+  final RxList<Todo> todoList = <Todo>[].obs;
 
   void changeTodoStatus(Todo todo) async {
     switch (todo.status) {
@@ -36,7 +21,7 @@ class TodoDataHolder extends InheritedWidget {
           todo.status = TodoStatus.incomplete;
         });
     }
-    notifier.notify();
+    todoList.refresh();
   }
 
   void addTodo() async {
@@ -44,7 +29,7 @@ class TodoDataHolder extends InheritedWidget {
 
     if (result != null) {
       // TodoDataHolder.of(context) -> context.todoHolder
-      notifier.addTodo(Todo(
+      todoList.add(Todo(
           id: DateTime.now().millisecondsSinceEpoch, // 현재 시간을 ms 단위로 변환
           title: result.text,
           dueTime: result.dateTime));
@@ -56,16 +41,16 @@ class TodoDataHolder extends InheritedWidget {
     if (result != null) {
       todo.title = result.text;
       todo.dueTime = result.dateTime;
-      notifier.notify();
+      todoList.refresh();
     }
   }
 
   void removeTodo(Todo todo) async {
-    notifier.value.remove(todo);
-    notifier.notify();
+    todoList.remove(todo);
+    todoList.refresh();
   }
 }
 
-extension TodoDataHolderContextExtension on BuildContext {
-  TodoDataHolder get todoHolder => TodoDataHolder._of(this);
+mixin class TodoDataProvider {
+  late final TodoDataHolder todoData = Get.find();
 }

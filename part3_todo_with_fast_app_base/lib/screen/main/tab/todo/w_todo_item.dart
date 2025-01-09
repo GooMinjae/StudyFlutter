@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 
 import 'w_todo_status.dart';
 
-class TodoItem extends StatelessWidget {
+class TodoItem extends StatelessWidget with TodoDataProvider {
   final Todo todo;
-  const TodoItem(this.todo, {super.key});
+  TodoItem(this.todo, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      onDismissed: (direction) => context.todoHolder.removeTodo(todo),
+      onDismissed: (direction) => todoData.removeTodo(todo),
       background: RoundedContainer(
         color: context.appColors.removeTodoBg,
         child: const Row(
@@ -56,7 +56,7 @@ class TodoItem extends StatelessWidget {
                 Expanded(child: todo.title.text.size(20).medium.make()),
                 IconButton(
                     onPressed: () async {
-                      context.todoHolder.editTodo(todo);
+                      todoData.editTodo(todo);
                     },
                     icon: const Icon(EvaIcons.editOutline))
               ],
