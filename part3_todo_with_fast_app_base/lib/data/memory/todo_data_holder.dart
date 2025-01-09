@@ -22,6 +22,8 @@ class TodoDataHolder extends GetxController {
         });
     }
     todoList.refresh();
+    // // GetBuilder<> controller 사용시 update(); 필요
+    // update();
   }
 
   void addTodo() async {
@@ -42,12 +44,14 @@ class TodoDataHolder extends GetxController {
       todo.title = result.text;
       todo.dueTime = result.dateTime;
       todoList.refresh();
+      // update();
     }
   }
 
   void removeTodo(Todo todo) async {
     todoList.remove(todo);
     todoList.refresh();
+    // update();
   }
 }
 
