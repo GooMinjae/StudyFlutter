@@ -7,6 +7,7 @@ import 'item/preference_item.dart';
 export 'package:get/get_rx/get_rx.dart';
 export 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
+// SharedPreferences를 사용하여 애플리케이션 설정 값을 저장, 불러오기, 삭제하기 위한 유틸리티 클래스를 구현한 코드입니다.
 class AppPreferences {
   static const String prefix = 'AppPreference.';
 
