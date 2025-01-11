@@ -15,6 +15,7 @@ class TodoData extends GetxController {
 
   @override
   void onInit() async {
+    // local db 사용
     final getTodoResult = await todoRepository.getTodoList();
     getTodoResult.runIfSuccess((data) {
       todoList.addAll(data);

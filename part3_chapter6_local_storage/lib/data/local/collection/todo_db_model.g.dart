@@ -1,3 +1,5 @@
+// flutter pub run build_runner build  로 생성
+
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'todo_db_model.dart';

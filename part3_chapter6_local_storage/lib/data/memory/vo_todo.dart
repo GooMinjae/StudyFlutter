@@ -5,6 +5,7 @@ import '../local/collection/todo_db_model.dart';
 
 part 'vo_todo.g.dart';
 
+// Todo
 @JsonSerializable()
 class Todo {
   Todo({
@@ -36,7 +37,8 @@ class Todo {
         modifyTime: e.modifyTime);
   }
 
-  TodoDbModel toDbModel() => TodoDbModel(id, createdTime, modifyTime, title, dueDate, status);
+  TodoDbModel toDbModel() =>
+      TodoDbModel(id, createdTime, modifyTime, title, dueDate, status);
 
   Map<String, dynamic> toJson() => _$TodoToJson(this);
 }

@@ -4,6 +4,7 @@ import '../../memory/todo_status.dart';
 
 part 'todo_db_model.g.dart';
 
+// TodoDbModel
 @collection
 class TodoDbModel {
   Id id;

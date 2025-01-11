@@ -17,17 +17,21 @@ class LocalDB implements TodoRepository<LocalDBError> {
 
   static Future<void> init() async {
     final dir = await getApplicationDocumentsDirectory();
-    _isar = await Isar.open([TodoDbModelSchema], maxSizeMiB: 512, directory: dir.path);
+    _isar = await Isar.open([TodoDbModelSchema],
+        maxSizeMiB: 512, directory: dir.path);
   }
 
   @override
   Future<SimpleResult<List<Todo>, LocalDBError>> getTodoList() async {
     try {
-      final documents = await _isar.todoDbModels.filter().idGreaterThan(0).findAll();
-      return SimpleResult.success(documents.map((e) => Todo.fromDB(e)).toList());
+      // filter 처리 후 findAll
+      final documents =
+          await _isar.todoDbModels.filter().idGreaterThan(0).findAll(); // isar inspector로 filter기능들 확인 가능함
+      return SimpleResult.success(
+          documents.map((e) => Todo.fromDB(e)).toList());
     } catch (e) {
-      return SimpleResult.failure(
-          LocalDBError(LocalDBErrorType.unknown, '에러가 발생했습니다. catch를 통해 세분화된 에러를 넘겨주세요.'));
+      return SimpleResult.failure(LocalDBError(
+          LocalDBErrorType.unknown, '에러가 발생했습니다. catch를 통해 세분화된 에러를 넘겨주세요.'));
     }
   }
 
