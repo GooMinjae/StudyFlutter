@@ -1,6 +1,13 @@
-import 'package:fast_app_base/screen/main/tab/tab_item.dart';
-import 'package:fast_app_base/screen/main/tab/tab_navigator.dart';
+import 'dart:convert';
+
+import 'package:fast_app_base/common/cli_common.dart';
+import 'package:fast_app_base/common/widget/animated_number_text.dart';
+import 'package:fast_app_base/common/widget/line_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:live_background/live_background.dart';
+import 'package:live_background/object/particle_shape_type.dart';
+import 'package:live_background/widget/live_background_widget.dart';
+import 'package:web_socket_channel/io.dart';
 
 import '../../common/common.dart';
 import 'w_menu_drawer.dart';
@@ -12,150 +19,75 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => MainScreenState();
 }
 
-class MainScreenState extends State<MainScreen> with SingleTickerProviderStateMixin {
-  TabItem _currentTab = TabItem.home;
-  final tabs = [TabItem.home, TabItem.favorite];
-  final List<GlobalKey<NavigatorState>> navigatorKeys = [];
+class MainScreenState extends State<MainScreen> {
+  final wsUrl = Uri.parse('wss://stream.binance.com:9443/ws/btcusdt@trade');
+  late final channel = IOWebSocketChannel.connect(wsUrl);
 
-  int get _currentIndex => tabs.indexOf(_currentTab);
+  late final Stream<dynamic> stream; // channel에서 stream값을 websocket을 통해 받아오기
 
-  GlobalKey<NavigatorState> get _currentTabNavigationKey => navigatorKeys[_currentIndex];
+  String priceString = 'Loading';
+  final List<double> priceList = [];
 
-  bool get extendBody => true;
-
-  static double get bottomNavigationBarBorderRadius => 30.0;
+  final intervalDuration = 1.seconds;
+  DateTime lastUpdatedTime = DateTime.now();
 
   @override
   void initState() {
+    stream = channel.stream;
+    stream.listen((event) {
+      final obj = json.decode(event);
+      final double price = double.parse(obj['p']); // String을 double로 parse
+      if (DateTime.now().difference(lastUpdatedTime) > intervalDuration) {
+        setState(() {
+          lastUpdatedTime = DateTime.now();
+          priceList.add(price);
+          // priceString = obj['p']; // setState 밖에서 수행하여도 결과는 동일 (sync)
+          priceString = price.toDoubleStringAsFixed(); // default : 소수점 두자리
+        });
+      }
+    });
+
     super.initState();
-    initNavigatorKeys();
   }
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: isRootPage,
-      onPopInvoked: _handleBackPressed,
-      child: Scaffold(
-        extendBody: extendBody, //bottomNavigationBar 아래 영역 까지 그림
-        drawer: const MenuDrawer(),
-        body: Container(
-          color: context.appColors.seedColor.getMaterialColorValues[200],
-          padding: EdgeInsets.only(bottom: extendBody ? 60 - bottomNavigationBarBorderRadius : 0),
-          child: SafeArea(
-            bottom: !extendBody,
-            child: pages,
+    return Scaffold(
+      drawer: const MenuDrawer(),
+      body: Stack(
+        children: [
+          const LiveBackgroundWidget(
+            shape: ParticleShapeType.square,
+            velocityY: -7,
+            particleMinSize: 5,
+            particleMaxSize: 25,
+            particleCount: 3000,
+            palette: Palette(colors: [
+              Color(0xff165B33),
+              Color(0xff83ec00),
+            ]),
           ),
-        ),
-        bottomNavigationBar: _buildBottomNavigationBar(context),
-      ),
-    );
-  }
-
-  bool get isRootPage =>
-      _currentTab == TabItem.home && _currentTabNavigationKey.currentState?.canPop() == false;
-
-  IndexedStack get pages => IndexedStack(
-      index: _currentIndex,
-      children: tabs
-          .mapIndexed((tab, index) => Offstage(
-                offstage: _currentTab != tab,
-                child: TabNavigator(
-                  navigatorKey: navigatorKeys[index],
-                  tabItem: tab,
-                ),
-              ))
-          .toList());
-
-  void _handleBackPressed(bool didPop) {
-    if (!didPop) {
-      if (_currentTabNavigationKey.currentState?.canPop() == true) {
-        Nav.pop(_currentTabNavigationKey.currentContext!);
-        return;
-      }
-
-      if (_currentTab != TabItem.home) {
-        _changeTab(tabs.indexOf(TabItem.home));
-      }
-    }
-  }
-
-  Widget _buildBottomNavigationBar(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        boxShadow: [
-          BoxShadow(color: Colors.black26, spreadRadius: 0, blurRadius: 10),
+          SafeArea(
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AnimatedNumberText(
+                    priceString,
+                    textStyle:
+                        TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+                    duration: 50.ms,
+                  ),
+                  LineChartWidget(
+                    priceList,
+                    maxPrice: 95000,
+                  )
+                ],
+              ),
+            ),
+          ),
         ],
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(bottomNavigationBarBorderRadius),
-          topRight: Radius.circular(bottomNavigationBarBorderRadius),
-        ),
-        child: BottomNavigationBar(
-          items: navigationBarItems(context),
-          currentIndex: _currentIndex,
-          selectedItemColor: context.appColors.text,
-          unselectedItemColor: context.appColors.iconButtonInactivate,
-          onTap: _handleOnTapNavigationBarItem,
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          type: BottomNavigationBarType.fixed,
-        ),
-      ),
     );
-  }
-
-  List<BottomNavigationBarItem> navigationBarItems(BuildContext context) {
-    return tabs
-        .mapIndexed(
-          (tab, index) => tab.toNavigationBarItem(
-            context,
-            isActivated: _currentIndex == index,
-          ),
-        )
-        .toList();
-  }
-
-  void _changeTab(int index) {
-    setState(() {
-      _currentTab = tabs[index];
-    });
-  }
-
-  BottomNavigationBarItem bottomItem(
-      bool activate, IconData iconData, IconData inActivateIconData, String label) {
-    return BottomNavigationBarItem(
-        icon: Icon(
-          key: ValueKey(label),
-          activate ? iconData : inActivateIconData,
-          color: activate ? context.appColors.iconButton : context.appColors.iconButtonInactivate,
-        ),
-        label: label);
-  }
-
-  void _handleOnTapNavigationBarItem(int index) {
-    final oldTab = _currentTab;
-    final targetTab = tabs[index];
-    if (oldTab == targetTab) {
-      final navigationKey = _currentTabNavigationKey;
-      popAllHistory(navigationKey);
-    }
-    _changeTab(index);
-  }
-
-  void popAllHistory(GlobalKey<NavigatorState> navigationKey) {
-    final bool canPop = navigationKey.currentState?.canPop() == true;
-    if (canPop) {
-      while (navigationKey.currentState?.canPop() == true) {
-        navigationKey.currentState!.pop();
-      }
-    }
-  }
-
-  void initNavigatorKeys() {
-    for (final _ in tabs) {
-      navigatorKeys.add(GlobalKey<NavigatorState>());
-    }
   }
 }
