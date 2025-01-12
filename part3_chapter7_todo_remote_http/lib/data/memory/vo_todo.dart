@@ -13,6 +13,7 @@ class Todo with _$Todo {
   factory Todo({
     required final int id,
     // ignore: invalid_annotation_target
+    // ** @JsonKey **
     @JsonKey(name: 'created_time') required final DateTime createdTime,
     DateTime? modifyTime,
     required String title,

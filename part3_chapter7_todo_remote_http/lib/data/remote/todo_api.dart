@@ -15,6 +15,7 @@ class TodoApi implements TodoRepository<ApiError> {
   //서버에서 Content-Type : application/json 헤더를 주지 않는 경우 아래 처럼 강제 변환 가능
   //final client = TodoClient(Dio()..interceptors.add(DioJsonResponseConverter()));
   final client = TodoClient(Dio(BaseOptions(
+      // TodoClient
       baseUrl: Platform.isAndroid
           ? 'http://10.0.2.2:8080/'
           : 'http://localhost:8080/')));
