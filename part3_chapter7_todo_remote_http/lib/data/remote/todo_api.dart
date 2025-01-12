@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:fast_app_base/common/common.dart';
 import 'package:fast_app_base/data/remote/clients/todo_client.dart';
 import 'package:fast_app_base/data/remote/result/api_error.dart';
+import 'package:flutter/material.dart';
 
 import '../memory/vo_todo.dart';
 import '../simple_result.dart';
@@ -14,7 +15,9 @@ class TodoApi implements TodoRepository<ApiError> {
   //서버에서 Content-Type : application/json 헤더를 주지 않는 경우 아래 처럼 강제 변환 가능
   //final client = TodoClient(Dio()..interceptors.add(DioJsonResponseConverter()));
   final client = TodoClient(Dio(BaseOptions(
-      baseUrl: Platform.isAndroid ? 'http://10.0.2.2:8080/' : 'http://localhost:8080/')));
+      baseUrl: Platform.isAndroid
+          ? 'http://10.0.2.2:8080/'
+          : 'http://localhost:8080/')));
 
   TodoApi._();
 
@@ -58,6 +61,10 @@ class TodoApi implements TodoRepository<ApiError> {
     try {
       return await apiLogic();
     } catch (e) {
+      debugPrint('$e');
+
+      ///Exception has occurred.
+      ///_TypeError (type '_Failure<dynamic, ApiError>' is not a subtype of type 'FutureOr<SimpleResult<List<Todo>, ApiError>>')
       return ApiError.createErrorResult(e);
     }
   }

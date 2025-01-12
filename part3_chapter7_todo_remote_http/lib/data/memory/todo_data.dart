@@ -12,7 +12,7 @@ import 'package:get/get.dart';
 
 import '../remote/todo_api.dart';
 
-class TodoData extends GetxController {
+class TodoData extends GetxController with StateMixin {
   final RxList<Todo> todoList = <Todo>[].obs;
   final RxBool isLoaded = false.obs;
 
@@ -40,7 +40,7 @@ class TodoData extends GetxController {
 
   void addTodo(BuildContext context) async {
     final result = await WriteTodoBottomSheet().show();
-    result?.runIfSuccess((data) async{
+    result?.runIfSuccess((data) async {
       final newTodo = Todo(
         id: newId,
         title: data.title,
@@ -48,17 +48,16 @@ class TodoData extends GetxController {
         createdTime: DateTime.now(),
         status: TodoStatus.incomplete,
       );
-     final requestResult = await todoRepository.addTodo(newTodo);
-     requestResult.runIfSuccess((data) => todoList.add(newTodo));
-     requestResult.runIfFailure((error) {
-       switch(error.networkErrorType){
-
-         case NetworkErrorType.networkConnectionError:
-           //재시도를 3번
-         case NetworkErrorType.serviceError:
-           MessageDialog(error.message).show();
-       }
-     });
+      final requestResult = await todoRepository.addTodo(newTodo);
+      requestResult.runIfSuccess((data) => todoList.add(newTodo));
+      requestResult.runIfFailure((error) {
+        switch (error.networkErrorType) {
+          case NetworkErrorType.networkConnectionError:
+          //재시도를 3번
+          case NetworkErrorType.serviceError:
+            MessageDialog(error.message).show();
+        }
+      });
     });
   }
 
@@ -81,7 +80,8 @@ class TodoData extends GetxController {
         return;
     }
     final Todo todoForSave = todo.copyWith(status: nextStatus);
-    final responseResult = await todoRepository.updateTodo(todoForSave); //객체 안의 status 바꿔서 update요청
+    final responseResult = await todoRepository
+        .updateTodo(todoForSave); //객체 안의 status 바꿔서 update요청
     processResponseResult(responseResult, todoForSave);
   }
 
@@ -99,7 +99,8 @@ class TodoData extends GetxController {
     });
   }
 
-  void processResponseResult(SimpleResult<void, ApiError> result, Todo updatedTodo) {
+  void processResponseResult(
+      SimpleResult<void, ApiError> result, Todo updatedTodo) {
     result.runIfSuccess((data) => updateTodo(updatedTodo));
     result.runIfFailure((error) => MessageDialog(error.message).show());
   }

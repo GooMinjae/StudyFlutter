@@ -16,19 +16,23 @@ class _TodoListState extends State<TodoList> with TodoDataProvider {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => !todoData.isLoaded.value ? const Center(child: CircularProgressIndicator(),)
+      // list loading 안됐을 때, 로딩 CircularProgressIndicator
+      () => !todoData.isLoaded.value
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
           : todoData.todoList.isEmpty
-          ? '할일을 작성해보세요'.text.size(30).makeCentered()
-          : SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: todoData.todoList
-                    .map((e) => TodoItem(
-                          todo: e,
-                        ))
-                    .toList(),
-              ),
-            ),
+              ? '할일을 작성해보세요'.text.size(30).makeCentered()
+              : SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: todoData.todoList
+                        .map((e) => TodoItem(
+                              todo: e,
+                            ))
+                        .toList(),
+                  ),
+                ),
     );
   }
 }

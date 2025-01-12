@@ -7,13 +7,13 @@ part 'vo_todo.freezed.dart';
 part 'vo_todo.g.dart';
 
 @unfreezed
-class Todo with _$Todo{
-
+class Todo with _$Todo {
   Todo._();
 
   factory Todo({
     required final int id,
-    @JsonKey(name: 'created_time')required final DateTime createdTime,
+    // ignore: invalid_annotation_target
+    @JsonKey(name: 'created_time') required final DateTime createdTime,
     DateTime? modifyTime,
     required String title,
     required DateTime dueDate,
@@ -22,5 +22,6 @@ class Todo with _$Todo{
 
   factory Todo.fromJson(Map<String, Object?> json) => _$TodoFromJson(json);
 
-  TodoDbModel get dbModel => TodoDbModel(id, createdTime, modifyTime, title, dueDate, status);
+  TodoDbModel get dbModel =>
+      TodoDbModel(id, createdTime, modifyTime, title, dueDate, status);
 }
