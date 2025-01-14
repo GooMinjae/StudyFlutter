@@ -6,6 +6,7 @@ import 'package:fast_app_base/screen/main/fab/w_floating_daangn_button_riverpod.
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../notification/s_notification.dart';
 import 'w_product_post_item.dart';
 
 class HomeFragment extends ConsumerStatefulWidget {
@@ -96,6 +97,13 @@ class _HomeFragmentState extends ConsumerState<HomeFragment> {
               ],
             ),
           ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Nav.push(NotificationScreen());
+                },
+                icon: const Icon(Icons.notifications_none_rounded))
+          ],
         ),
         Expanded(
           child: ListView.separated(
