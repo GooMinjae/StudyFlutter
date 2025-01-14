@@ -11,11 +11,20 @@ class ProductPostItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Tap(
-      onTap: () {
-        // 상세 페이지
-        Nav.push(PostDetailScreen(post.id, simpleProductPost: post));
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent, // 투명한 영역도 터치 가능하도록
+      onTapUp: (details) {
+        Nav.pushWithRippleEffect(
+            PostDetailScreen(post.id, simpleProductPost: post),
+            offset:
+                Offset(details.globalPosition.dx, details.globalPosition.dy),
+            durationMs: 800);
       },
+      // onTap: () {
+      //   // 상세 페이지
+      //   Nav.push(PostDetailScreen(post.id, simpleProductPost: post),
+      //       durationMs: 800, navAni: NavAni.Ripple); // Nav의 여러가지 효과
+      // },
       child: Stack(
         children: [
           Row(
@@ -23,9 +32,14 @@ class ProductPostItem extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: CachedNetworkImage(
-                  imageUrl: post.product.images[0],
-                  width: 150,
+                child: Hero(
+                  // Hero: 같은 이미지 사용 시 이미지가 커지듯이 위젯 변화
+                  // tag는 중복되면 안됨
+                  tag: '${post.id}_${post.product.images[0]}',
+                  child: CachedNetworkImage(
+                    imageUrl: post.product.images[0],
+                    width: 150,
+                  ),
                 ),
               ),
               Width(10),

@@ -84,6 +84,7 @@ class MainScreenState extends ConsumerState<MainScreen>
       index: _currentIndex,
       children: tabs
           .mapIndexed((tab, index) => Offstage(
+                // Offstage : 보고있는 탭이 아니라면 이전의 각각의 history, widget을 숨김
                 offstage: _currentTab != tab,
                 child: TabNavigator(
                   navigatorKey: navigatorKeys[index],
