@@ -1,7 +1,7 @@
 import 'package:fast_app_base/common/common.dart';
 import 'package:fast_app_base/entity/product/product_status.dart';
 import 'package:fast_app_base/entity/product/vo_product.dart';
-import 'package:fast_app_base/entity/product_post/vo_product_post.dart';
+import 'package:fast_app_base/entity/product_post/vo_simple_product_post.dart';
 import 'package:fast_app_base/entity/user/vo_address.dart';
 import 'package:fast_app_base/entity/user/vo_user.dart';
 
@@ -34,9 +34,9 @@ final product1 = Product(
     user1,
     '아이폰13',
     700000,
-    '깨끗하게 잘 쓰던 물건이에요'
-        '잘쓰면 좋겠습니다'
-        '감사합니다.',
+    // '깨끗하게 잘 쓰던 물건이에요'
+    //     '잘쓰면 좋겠습니다'
+    //     '감사합니다.',
     ProductStatus.normal,
     [
       picSum(500),
@@ -49,9 +49,9 @@ final product2 = Product(
     user2,
     '아이폰14',
     1000000,
-    '깨끗하게 잘 쓰던 물건이에요'
-        '잘쓰면 좋겠습니다'
-        '감사합니다.',
+    // '깨끗하게 잘 쓰던 물건이에요'
+    //     '잘쓰면 좋겠습니다'
+    //     '감사합니다.',
     ProductStatus.normal,
     [
       picSum(600),
@@ -64,9 +64,9 @@ final product3 = Product(
     user3,
     '감자',
     100,
-    '깨끗하게 잘 쓰던 물건이에요'
-        '잘쓰면 좋겠습니다'
-        '감사합니다.',
+    // '깨끗하게 잘 쓰던 물건이에요'
+    //     '잘쓰면 좋겠습니다'
+    //     '감사합니다.',
     ProductStatus.normal,
     [
       picSum(700),
@@ -74,7 +74,8 @@ final product3 = Product(
       picSum(703),
     ]);
 
-final post1 = ProductPost(
+final post1 = SimpleProductPost(
+  1, // id
   product1.user,
   product1,
   '글의 내용',
@@ -84,7 +85,8 @@ final post1 = ProductPost(
   DateTime.now().subtract(30.minutes),
 );
 
-final post2 = ProductPost(
+final post2 = SimpleProductPost(
+  2, // id
   product2.user,
   product2,
   '글의 내용',
@@ -94,7 +96,8 @@ final post2 = ProductPost(
   DateTime.now().subtract(30.days),
 );
 
-final post3 = ProductPost(
+final post3 = SimpleProductPost(
+  3, // id
   product3.user,
   product3,
   '감쟈 감쟈',
