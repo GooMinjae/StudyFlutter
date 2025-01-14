@@ -38,7 +38,7 @@ class PostDetailScreen extends ConsumerWidget {
     // data가 있을 때, 로딩 중 일때, 에러가 났을 때
     return productPost.when(
         data: (data) => _PostDetial(
-              data.simpleProductPost,
+              simpleProductPost ?? data.simpleProductPost,
               productPost: data,
             ),
         error: (error, trace) => '404 Error'.text.make(),
@@ -175,17 +175,18 @@ class _ImagePager extends StatelessWidget {
                 .toList(),
           ),
           // flutter pub add smooth_page_indicator
-          Align(
-              alignment: Alignment.bottomCenter,
-              child: SmoothPageIndicator(
-                controller: pageController,
-                count: simpleProductPost.product.images.length,
-                effect: const JumpingDotEffect(
-                  verticalOffset: 10,
-                  dotColor: Colors.white54,
-                  activeDotColor: Colors.black45,
-                ),
-              ))
+          if (simpleProductPost.product.images.length > 1)
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: SmoothPageIndicator(
+                  controller: pageController,
+                  count: simpleProductPost.product.images.length,
+                  effect: const JumpingDotEffect(
+                    verticalOffset: 10,
+                    dotColor: Colors.white54,
+                    activeDotColor: Colors.black45,
+                  ),
+                ))
         ],
       ),
     );
