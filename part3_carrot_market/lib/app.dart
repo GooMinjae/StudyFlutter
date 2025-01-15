@@ -1,4 +1,5 @@
 import 'package:fast_app_base/common/common.dart';
+import 'package:fast_app_base/common/fcm/fcm_manager.dart';
 import 'package:fast_app_base/common/theme/custom_theme_app.dart';
 import 'package:fast_app_base/screen/main/s_main.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class AppState extends State<App> with Nav, WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    FcmManager.requestPermission();
     WidgetsBinding.instance.addObserver(this);
   }
 
