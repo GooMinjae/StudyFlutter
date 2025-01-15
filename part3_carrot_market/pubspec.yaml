@@ -65,7 +65,11 @@ dependencies:
   cached_network_image: '>=3.2.3'
 
   #ui - util
-  keyboard_utils_fork: ^0.0.4
+  # keyboard_utils_fork: ^0.0.4
+  keyboard_utils_fork:
+    git:
+      url: https://github.com/BansookNam/keyboard_utils.git
+      ref: 'master'
 
   #network
   dio: ^5.0.0
@@ -79,6 +83,7 @@ dependencies:
   hooks_riverpod: ^2.6.1
   smooth_page_indicator: ^1.2.0+3
   image_picker: ^1.0.8
+  firebase_core: ^2.27.0
 
 dev_dependencies:
   flutter_test:
