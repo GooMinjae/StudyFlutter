@@ -11,7 +11,12 @@ import 'w_menu_drawer.dart';
 final currentTabProvider = StateProvider((ref) => TabItem.home);
 
 class MainScreen extends ConsumerStatefulWidget {
-  const MainScreen({super.key});
+  final TabItem firstTab;
+
+  const MainScreen({
+    super.key,
+    this.firstTab = TabItem.home,
+  });
 
   @override
   ConsumerState<MainScreen> createState() => MainScreenState();
@@ -20,11 +25,11 @@ class MainScreen extends ConsumerStatefulWidget {
 class MainScreenState extends ConsumerState<MainScreen>
     with SingleTickerProviderStateMixin {
   // TabItem get _currentTab => ref.read(currentTabProvider);
-  TabItem get _currentTab => ref.watch(currentTabProvider);
   final tabs = TabItem.values;
   late final List<GlobalKey<NavigatorState>> navigatorKeys =
       TabItem.values.map((e) => GlobalKey<NavigatorState>()).toList();
 
+  TabItem get _currentTab => ref.watch(currentTabProvider);
   int get _currentIndex => tabs.indexOf(_currentTab);
 
   GlobalKey<NavigatorState> get _currentTabNavigationKey =>
@@ -38,6 +43,16 @@ class MainScreenState extends ConsumerState<MainScreen>
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant MainScreen oldWidget) {
+    if (oldWidget.firstTab != widget.firstTab) {
+      delay(() {
+        ref.read(currentTabProvider.notifier).state = widget.firstTab;
+      }, 0.ms);
+    }
+    super.didUpdateWidget(oldWidget);
   }
 
   @override

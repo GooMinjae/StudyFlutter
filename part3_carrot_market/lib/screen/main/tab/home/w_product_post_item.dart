@@ -3,6 +3,7 @@ import 'package:fast_app_base/common/common.dart';
 import 'package:fast_app_base/entity/product_post/vo_simple_product_post.dart';
 import 'package:fast_app_base/screen/post_detail/s_post_detail.dart';
 import 'package:flutter/material.dart';
+
 import 'package:timeago/timeago.dart' as timeago;
 
 class ProductPostItem extends StatelessWidget {
@@ -11,20 +12,22 @@ class ProductPostItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent, // 투명한 영역도 터치 가능하도록
-      onTapUp: (details) {
-        Nav.pushWithRippleEffect(
-            PostDetailScreen(post.id, simpleProductPost: post),
-            offset:
-                Offset(details.globalPosition.dx, details.globalPosition.dy),
-            durationMs: 800);
-      },
-      // onTap: () {
-      //   // 상세 페이지
-      //   Nav.push(PostDetailScreen(post.id, simpleProductPost: post),
-      //       durationMs: 800, navAni: NavAni.Ripple); // Nav의 여러가지 효과
+    return Tap(
+      // behavior: HitTestBehavior.translucent, // 투명한 영역도 터치 가능하도록
+      // onTapUp: (details) {
+      //   Nav.pushWithRippleEffect(
+      //       PostDetailScreen(post.id, simpleProductPost: post),
+      //       offset:
+      //           Offset(details.globalPosition.dx, details.globalPosition.dy),
+      //       durationMs: 800);
       // },
+      onTap: () {
+        // 상세 페이지
+        context.go('/main/localLife/${post.id}', extra: post);
+
+        // Nav.push(PostDetailScreen(post.id, simpleProductPost: post),
+        //     durationMs: 800, navAni: NavAni.Ripple); // Nav의 여러가지 효과
+      },
       child: Stack(
         children: [
           Row(
