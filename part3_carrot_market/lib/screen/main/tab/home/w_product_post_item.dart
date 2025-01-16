@@ -69,6 +69,7 @@ class ProductPostItem extends StatelessWidget {
                       ],
                     ),
                     post.product.price.toWon().text.bold.make(),
+                    // == IntExt(post.product.price).toWon().text.bold.make(),
                   ],
                 ),
               )

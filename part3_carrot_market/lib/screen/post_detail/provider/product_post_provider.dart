@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:fast_app_base/common/cli_common.dart';
+import 'package:fast_app_base/common/dart/extension/ref_extention.dart';
 import 'package:fast_app_base/data/network/result/daangnApi.dart';
 import 'package:fast_app_base/entity/product_post/vo_product_post.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,5 +15,11 @@ final productPostProvider =
     // return await DaangnApi.getPost(id);
 
     AutoDisposeFutureProviderFamily<ProductPost, int>((ref, id) async {
+  // final link = ref.keepAlive();
+  // Timer(Duration(seconds: 15), () {
+  //   link.close();
+  // });
+  // -> extention/ref_extention.dart 로 옮김
+  ref.cacheFor(10.minutes);
   return await DaangnApi.getPost(id);
 });

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 final decimalFormat = NumberFormat.decimalPattern("en");
 
+// extention
 extension IntExt on int {
   static int? safeParse(String? source) {
     if (source == null) return null;
