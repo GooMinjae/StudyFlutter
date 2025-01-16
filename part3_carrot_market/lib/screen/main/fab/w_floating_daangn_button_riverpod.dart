@@ -5,7 +5,7 @@ import 'w_floating_daangn_button.state.dart';
 final floatingButtonStateProvider =
     StateNotifierProvider<FloatingButtonStateNotifier, FloatingButtonState>(
   (ref) => FloatingButtonStateNotifier(
-    const FloatingButtonState(false, false),
+    const FloatingButtonState(false, false, false),
   ),
 );
 
@@ -16,6 +16,7 @@ class FloatingButtonStateNotifier extends StateNotifier<FloatingButtonState> {
 
   void toggleMenu() {
     final isExpanded = state.isExpanded;
+    final isHided = state.isHided;
     final isSmall = state.isSmall;
 
     // state = state.copyWith(
@@ -47,6 +48,14 @@ class FloatingButtonStateNotifier extends StateNotifier<FloatingButtonState> {
     }
 
     state = state.copyWith(isSmall: isSmall);
+  }
+
+  void hideButton() {
+    state = state.copyWith(isHided: true);
+  }
+
+  void showButton() {
+    state = state.copyWith(isHided: false);
   }
 }
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
