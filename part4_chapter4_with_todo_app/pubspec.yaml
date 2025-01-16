@@ -62,10 +62,19 @@ dependencies:
   simple_shadow: ^0.3.1
   after_layout: ^1.2.0
   flutter_svg: ^2.0.3
-  cached_network_image: ^3.2.3
+  cached_network_image: '>=3.2.3'
 
   #ui - util
   keyboard_utils_fork: ^0.0.4
+
+  # When keyboard_utils file is in this project folder
+  # keyboard_utils_fork:
+  #   path: ../keyboard_utils
+
+  # keyboard_utils_fork:
+  #   git:
+  #     url: https://github.com/BansookNam/keyboard_utils.git
+  #     ref: 'master'
 
   #network
   dio: ^5.0.0
@@ -73,6 +82,12 @@ dependencies:
   freezed: ^2.3.4
   freezed_annotation: ^2.2.0
   json_annotation: ^4.8.0
+  flutter_riverpod: ^2.3.10
+  timeago: ^3.7.0
+  flutter_hooks: ^0.20.5
+  hooks_riverpod: ^2.6.1
+  smooth_page_indicator: ^1.2.0+3
+  image_picker: ^1.0.8
   rive: ^0.11.13
 
 dev_dependencies:
@@ -112,9 +127,13 @@ flutter:
     - assets/image/icon/
     - assets/image/flag/
     - assets/image/darkmode/
+    - assets/image/fab/
+    - assets/image/detail/
+    - assets/image/home/
+    - assets/image/notification/
+    - assets/image/write/
     - assets/translations/
     - assets/
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

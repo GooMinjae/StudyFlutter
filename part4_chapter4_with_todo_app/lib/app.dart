@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import 'data/memory/todo_data_notifier.dart';
 
-
 class App extends StatefulWidget {
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
   static bool isForeground = true;
@@ -67,6 +66,8 @@ class AppState extends State<App> with Nav, WidgetsBindingObserver {
         App.isForeground = false;
         break;
       case AppLifecycleState.detached:
+        break;
+      case AppLifecycleState.hidden: //Flutter 3.13 이하 버전을 쓰신다면 해당 라인을 삭제해주세요.
         break;
     }
     super.didChangeAppLifecycleState(state);
