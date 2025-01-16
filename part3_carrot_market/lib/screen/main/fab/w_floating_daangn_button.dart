@@ -63,16 +63,19 @@ class FloatingDaangnButton extends ConsumerWidget {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _floatItem('알바', '$basePath/fab/fab_01.png'),
-                              _floatItem('과외/클래스', '$basePath/fab/fab_02.png'),
-                              _floatItem('농수산물', '$basePath/fab/fab_03.png'),
-                              _floatItem('부동산', '$basePath/fab/fab_04.png'),
-                              _floatItem('중고차', '$basePath/fab/fab_05.png'),
+                              _floatItem(
+                                  'part_time', '$basePath/fab/fab_01.png'),
+                              _floatItem('lecture', '$basePath/fab/fab_02.png'),
+                              _floatItem(
+                                  'agriculture', '$basePath/fab/fab_03.png'),
+                              _floatItem('profit', '$basePath/fab/fab_04.png'),
+                              _floatItem('car', '$basePath/fab/fab_05.png'),
                             ]),
                       ),
                       Tap(
                         onTap: () {
                           Nav.push(WriteScreen());
+                          // context.go('/');
                         },
                         child: Container(
                           width: 160,
@@ -84,8 +87,8 @@ class FloatingDaangnButton extends ConsumerWidget {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                _floatItem(
-                                    '내 물건 팔기', '$basePath/fab/fab_06.png'),
+                                _floatItem('sell_my_thing',
+                                    '$basePath/fab/fab_06.png'),
                               ]),
                         ),
                       ),
@@ -149,7 +152,7 @@ _floatItem(String title, String imagePath) {
         width: 30,
       ),
       const Width(8),
-      title.text.make()
+      title.tr().text.make()
     ],
   );
 }

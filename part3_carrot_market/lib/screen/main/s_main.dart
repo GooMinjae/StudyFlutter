@@ -57,9 +57,9 @@ class MainScreenState extends ConsumerState<MainScreen>
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: isRootPage,
-      onPopInvoked: _handleBackPressed,
+    return WillPopScope(
+      // canPop: isRootPage,
+      onWillPop: _handleBackPressed,
       child: Material(
         child: Stack(
           children: [
@@ -99,7 +99,6 @@ class MainScreenState extends ConsumerState<MainScreen>
       index: _currentIndex,
       children: tabs
           .mapIndexed((tab, index) => Offstage(
-                // Offstage : 보고있는 탭이 아니라면 이전의 각각의 history, widget을 숨김
                 offstage: _currentTab != tab,
                 child: TabNavigator(
                   navigatorKey: navigatorKeys[index],
@@ -108,17 +107,17 @@ class MainScreenState extends ConsumerState<MainScreen>
               ))
           .toList());
 
-  void _handleBackPressed(bool didPop) {
-    if (!didPop) {
-      if (_currentTabNavigationKey.currentState?.canPop() == true) {
-        Nav.pop(_currentTabNavigationKey.currentContext!);
-        return;
-      }
-
+  Future<bool> _handleBackPressed() async {
+    final isFirstRouteInCurrentTab =
+        (await _currentTabNavigationKey.currentState?.maybePop() == false);
+    if (isFirstRouteInCurrentTab) {
       if (_currentTab != TabItem.home) {
         _changeTab(tabs.indexOf(TabItem.home));
+        return false;
       }
     }
+    // maybePop 가능하면 나가지 않는다.
+    return isFirstRouteInCurrentTab;
   }
 
   Widget _buildBottomNavigationBar(BuildContext context) {

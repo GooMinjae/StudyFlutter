@@ -8,19 +8,19 @@ import 'my/f_my.dart';
 import 'near_me/f_near_me.dart';
 
 enum TabItem {
-  home(Icons.home, '홈', HomeFragment()),
-  localLife(Icons.holiday_village_outlined, '동네생활', LocalLiftFragment()),
-  nearMe(Icons.pin_drop_outlined, '내 근처', NearMeFragment()),
-  chat(Icons.chat_bubble_outline, '채팅', ChatFragment()),
-  my(Icons.person_outline_rounded, '나의 당근', MyFragment()),
+  home(Icons.home, 'home', HomeFragment()),
+  localLife(Icons.holiday_village_outlined, 'local_life', LocalLiftFragment()),
+  nearMe(Icons.pin_drop_outlined, 'nearMe', NearMeFragment()),
+  chat(Icons.chat_bubble_outline, 'chat', ChatFragment()),
+  my(Icons.person_outline_rounded, 'my_daangn', MyFragment()),
   ;
 
   final IconData activeIcon;
   final IconData inActiveIcon;
-  final String tabName;
+  final String tabNameKey;
   final Widget firstPage;
 
-  const TabItem(this.activeIcon, this.tabName, this.firstPage,
+  const TabItem(this.activeIcon, this.tabNameKey, this.firstPage,
       {IconData? inActiveIcon})
       : inActiveIcon = inActiveIcon ?? activeIcon;
 
@@ -32,12 +32,12 @@ enum TabItem {
       {required bool isActivated}) {
     return BottomNavigationBarItem(
         icon: Icon(
-          key: ValueKey(tabName),
+          key: ValueKey(tabNameKey),
           isActivated ? activeIcon : inActiveIcon,
           color: isActivated
               ? context.appColors.iconButton
               : context.appColors.iconButtonInactivate,
         ),
-        label: tabName);
+        label: tabNameKey.tr());
   }
 }

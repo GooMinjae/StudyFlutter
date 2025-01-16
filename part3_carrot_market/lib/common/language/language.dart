@@ -4,6 +4,7 @@ import '../../app.dart';
 import '../common.dart';
 
 enum Language {
+  // 언어선택 enum
   korean(Locale('ko'), '$basePath/flag/flag_kr.png'),
   english(Locale('en'), '$basePath/flag/flag_us.png');
 
