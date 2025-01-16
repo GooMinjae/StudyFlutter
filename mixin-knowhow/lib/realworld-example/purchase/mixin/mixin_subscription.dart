@@ -6,13 +6,18 @@ import 'package:mixin_knowhow/realworld-example/purchase/mixin/mixin_inapp_purch
 import 'package:mixin_knowhow/realworld-example/purchase/object/o_purchased_item.dart';
 import 'package:mixin_knowhow/util/u_async.dart';
 
-mixin SubscriptionMixin implements InAppPurchaseMixin, RequestPurchaseInterface {
+// InAppPurchaseMixin: SubscriptionMixin, BuyGemMixin 공통된 부분
+// RequestPurchaseInterface: SubscriptionMixin, BuyGemMixin 분리
+mixin SubscriptionMixin
+    implements InAppPurchaseMixin, RequestPurchaseInterface {
   @override
-  Future<bool> requestPurchase(PurchasedItem purchasedItem, BuildContext context) async {
+  Future<bool> requestPurchase(
+      PurchasedItem purchasedItem, BuildContext context) async {
     print('api: request subscribe start: ${purchasedItem.productId}');
     await sleep(200); //add purchase information to service server
     final result = true; //Random().nextBool();
-    print('api: request subscribe ${result ? "success" : "failed"}: ${purchasedItem.productId}');
+    print(
+        'api: request subscribe ${result ? "success" : "failed"}: ${purchasedItem.productId}');
     return result;
   }
 }

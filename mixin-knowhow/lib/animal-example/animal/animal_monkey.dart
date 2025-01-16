@@ -5,7 +5,7 @@ import 'package:mixin_knowhow/animal-example/ability-abstract-class/animal_walka
 import 'package:mixin_knowhow/animal-example/skill/skill_use_stick.dart';
 
 class Monkey extends WalkableAnimal {
-  late UseStick useStick = UseStick('Maple');
+  late UseStick useStick = UseStick('Maple'); // late 사용
 
   // UseStick? _useStick;
   //
