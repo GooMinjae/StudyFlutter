@@ -52,6 +52,8 @@ class AppState extends ConsumerState<App> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return CustomThemeApp(
       child: Builder(builder: (context) {
+        // CustomThemeApp 에는 context가 들어있지 않기 때문에? Builder사용
+        // -> Builder 사용하여 context.themeType을 받아올 수 있음
         return DaangnAuthScope(
           notifier: _auth,
           child: MaterialApp.router(

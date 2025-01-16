@@ -11,7 +11,8 @@ import 'package:google_fonts/src/google_fonts_variant.dart';
 class CustomGoogleFont extends GoogleFontsFile {
   final String downloadUrl;
 
-  CustomGoogleFont(this.downloadUrl, super.expectedFileHash, super.expectedLength);
+  CustomGoogleFont(
+      this.downloadUrl, super.expectedFileHash, super.expectedLength);
 
   @override
   String get url => downloadUrl;
@@ -44,6 +45,8 @@ class CustomGoogleFonts {
         fontWeight: FontWeight.w400,
         fontStyle: FontStyle.normal,
       ): CustomGoogleFont(
+        // 온라인에서 다운받을 수 있는 서버의 폰트 파일 주소
+        // 한글 폰트의 경우, asset 파일에 추가하면 파일 용량이 꽤 큼
         'https://fonts.gstatic.com/s/diphylleia/v1/DtVmJxCtRKMixK4_HXsIulwm6gDXvwE.ttf',
         '7027babd4e46661d27d30bc5b26813ade04879df60566796aa06d5d6f51f15c5',
         1942984,

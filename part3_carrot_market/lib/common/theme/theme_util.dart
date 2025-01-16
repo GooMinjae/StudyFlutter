@@ -5,6 +5,7 @@ import 'package:flutter/scheduler.dart';
 
 import '../common.dart';
 
+// ThemeUtil: Brightness 제공
 class ThemeUtil {
   static Brightness get systemBrightness =>
       SchedulerBinding.instance.platformDispatcher.platformBrightness;
@@ -14,15 +15,15 @@ class ThemeUtil {
     context.changeTheme(theme);
   }
 
-  static void toggleTheme(BuildContext context) {
-    final theme = context.themeType;
-    switch (theme) {
-      case CustomTheme.dark:
-        changeTheme(context, CustomTheme.light);
-        break;
-      case CustomTheme.light:
-        changeTheme(context, CustomTheme.dark);
-        break;
-    }
-  }
+  // static void toggleTheme(BuildContext context) {
+  //   final theme = context.themeType;
+  //   switch (theme) {
+  //     case CustomTheme.dark:
+  //       changeTheme(context, CustomTheme.light);
+  //       break;
+  //     case CustomTheme.light:
+  //       changeTheme(context, CustomTheme.dark);
+  //       break;
+  //   }
+  // }
 }

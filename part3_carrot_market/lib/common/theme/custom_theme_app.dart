@@ -16,6 +16,7 @@ class CustomThemeApp extends StatefulWidget {
 }
 
 class _CustomThemeAppState extends State<CustomThemeApp> {
+  // 모드 변환 시 savedTheme 변화
   late CustomTheme theme = savedTheme ?? defaultTheme ?? systemTheme;
   final CustomTheme? defaultTheme = App.defaultTheme;
 
