@@ -63,9 +63,16 @@ dependencies:
   after_layout: ^1.2.0
   flutter_svg: ^2.0.3
   cached_network_image: '>=3.2.3'
+  daangn_ui:
+    path: packages/daangn_ui
 
   #ui - util
   # keyboard_utils_fork: ^0.0.4
+
+  # When keyboard_utils file is in this project folder
+  # keyboard_utils_fork:
+  #   path: ../keyboard_utils
+
   keyboard_utils_fork:
     git:
       url: https://github.com/BansookNam/keyboard_utils.git
