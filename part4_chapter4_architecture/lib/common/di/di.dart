@@ -6,5 +6,6 @@ import 'di.config.dart';
 /// getIt, inject, locator
 final locator = GetIt.instance;
 
+// annotation
 @InjectableInit()
 void configureDependencies() => locator.init();

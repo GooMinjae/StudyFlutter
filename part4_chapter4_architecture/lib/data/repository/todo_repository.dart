@@ -13,6 +13,7 @@ import '../source/local/todo_db.dart';
 import '../source/remote/todo_api.dart';
 
 /// Remote
+/// Singleton
 // @Singleton(as: TodoRepository)
 class TodoRemoteRepository implements TodoRepository<ApiError> {
   final TodoApi _api;
@@ -51,15 +52,18 @@ class TodoRemoteRepository implements TodoRepository<ApiError> {
     });
   }
 
-  Future<SimpleResult<T, ApiError>> tryRequest<T>(Future<SimpleResult<T, ApiError>> Function() apiLogic) async {
+  Future<SimpleResult<T, ApiError>> tryRequest<T>(
+      Future<SimpleResult<T, ApiError>> Function() apiLogic) async {
     try {
       return await apiLogic();
     } on DioException catch (e) {
       return SimpleResult.failure(ApiError(
-          message: e.message ?? e.error?.toString() ?? 'error message is not exist',
+          message:
+              e.message ?? e.error?.toString() ?? 'error message is not exist',
           statusCode: e.response?.statusCode ?? 0));
     } catch (e) {
-      return SimpleResult.failure(ApiError(message: 'unknown error ${e.toString()}'));
+      return SimpleResult.failure(
+          ApiError(message: 'unknown error ${e.toString()}'));
     }
   }
 }
@@ -71,21 +75,26 @@ class TodoLocalRepository implements TodoRepository<LocalDBError> {
 
   TodoLocalRepository([TodoDB? db]) : _db = db ?? locator();
 
+  // data source ??
   @override
   Future<SimpleResult<List<Todo>, LocalDBError>> getTodoList() async {
     final result = await _db.getTodoList();
     if (result.isSuccess) {
-      return SimpleResult.success(result.successData.map((e) => e.toModel()).toList());
+      return SimpleResult.success(
+          result.successData.map((e) => e.toModel()).toList());
     } else {
       return SimpleResult.failure(result.failureData);
     }
   }
 
   @override
-  Future<SimpleResult<void, LocalDBError>> addTodo(Todo todo) => _db.addTodo(todo.toDbModel());
+  Future<SimpleResult<void, LocalDBError>> addTodo(Todo todo) =>
+      _db.addTodo(todo.toDbModel());
   @override
-  Future<SimpleResult<void, LocalDBError>> updateTodo(Todo todo) => _db.updateTodo(todo.toDbModel());
+  Future<SimpleResult<void, LocalDBError>> updateTodo(Todo todo) =>
+      _db.updateTodo(todo.toDbModel());
 
   @override
-  Future<SimpleResult<void, LocalDBError>> removeTodo(Id id) => _db.removeTodo(id);
+  Future<SimpleResult<void, LocalDBError>> removeTodo(Id id) =>
+      _db.removeTodo(id);
 }

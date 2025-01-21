@@ -34,6 +34,7 @@ class TodoController extends GetxController {
         status: TodoStatus.incomplete,
       );
       todoList.add(newTodo);
+      // **AddTodoUseCase**
       AddTodoUseCase().execute(newTodo);
     });
   }

@@ -7,7 +7,7 @@ import '../model/model.dart';
 import '../repository/repository.dart';
 
 /// 2) Use Case 하나만 만들고 메서드 구현
-/// CRUD
+/// CRUD - Create(생성), Read(읽기), Update(갱신), Delete(삭제)
 class TodoUseCase {
   /// CRUD
 }
@@ -17,7 +17,8 @@ class AddTodoUseCase implements UseCase<void, Todo> {
   // final TodoRepository<LocalDBError> _repository = locator();
   final TodoRepository<LocalDBError> _repository;
   // final TodoLocalRepository
-  AddTodoUseCase([TodoRepository<LocalDBError>? repository]) : _repository = repository ?? locator();
+  AddTodoUseCase([TodoRepository<LocalDBError>? repository])
+      : _repository = repository ?? locator();
 
   @override
   Future<void> execute(Todo params) {
@@ -28,7 +29,8 @@ class AddTodoUseCase implements UseCase<void, Todo> {
 class ReadTodosUseCase implements UseCase<List<Todo>, void> {
   final TodoRepository<LocalDBError> _repository;
 
-  ReadTodosUseCase([TodoRepository<LocalDBError>? repository]) : _repository = repository ?? locator();
+  ReadTodosUseCase([TodoRepository<LocalDBError>? repository])
+      : _repository = repository ?? locator();
 
   @override
   Future<List<Todo>> execute([void params]) async {
@@ -40,7 +42,8 @@ class ReadTodosUseCase implements UseCase<List<Todo>, void> {
 class UpdateTodoUseCase implements UseCase<void, Todo> {
   final TodoRepository<LocalDBError> _repository;
 
-  UpdateTodoUseCase([TodoRepository<LocalDBError>? repository]) : _repository = repository ?? locator();
+  UpdateTodoUseCase([TodoRepository<LocalDBError>? repository])
+      : _repository = repository ?? locator();
 
   @override
   Future<void> execute(Todo params) {
@@ -51,7 +54,8 @@ class UpdateTodoUseCase implements UseCase<void, Todo> {
 class RemoveTodoUseCase implements UseCase<void, int> {
   final TodoRepository<LocalDBError> _repository;
 
-  RemoveTodoUseCase([TodoRepository<LocalDBError>? repository]) : _repository = repository ?? locator();
+  RemoveTodoUseCase([TodoRepository<LocalDBError>? repository])
+      : _repository = repository ?? locator();
 
   @override
   Future<void> execute(int params) {
