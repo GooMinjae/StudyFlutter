@@ -54,7 +54,8 @@ class _BrowserState extends State<Browser> {
       params = const PlatformWebViewControllerCreationParams();
     }
 
-    final WebViewController controller = WebViewController.fromPlatformCreationParams(params);
+    final WebViewController controller =
+        WebViewController.fromPlatformCreationParams(params);
     // #enddocregion platform_features
 
     controller
@@ -68,6 +69,7 @@ class _BrowserState extends State<Browser> {
           onPageStarted: (String url) {
             debugPrint('Page started loading: $url');
             setState(() {
+              // load indicator
               _isShowLoadingIndicator = true;
             });
           },
@@ -113,7 +115,8 @@ Page resource error:
     // #docregion platform_features
     if (controller.platform is AndroidWebViewController) {
       AndroidWebViewController.enableDebugging(true);
-      (controller.platform as AndroidWebViewController).setMediaPlaybackRequiresUserGesture(false);
+      (controller.platform as AndroidWebViewController)
+          .setMediaPlaybackRequiresUserGesture(false);
     }
     // #enddocregion platform_features
 
@@ -200,11 +203,12 @@ Page resource error:
                     children: <Widget>[
                       /// TODO: FutureBuilder
                       FutureBuilder<bool>(
+                        // future 작업이 끝나면 builder 작업 수행
                         future: _controller.canGoBack(),
                         builder: (context, snapshot) {
                           final isCan = snapshot.data ?? false;
                           return Opacity(
-                            opacity: isCan ? 1.0 : 0.3,
+                            opacity: isCan ? 1.0 : 0.3, // opacity
                             child: IgnorePointer(
                               ignoring: !isCan,
                               child: GestureDetector(
@@ -222,7 +226,9 @@ Page resource error:
                                   ),
                                   child: Icon(
                                     Icons.arrow_back,
-                                    color: context.isDarkMode ? Colors.white : Colors.black87,
+                                    color: context.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black87,
                                   ),
                                 ),
                               ),
@@ -253,7 +259,9 @@ Page resource error:
                                   ),
                                   child: Icon(
                                     Icons.arrow_forward,
-                                    color: context.isDarkMode ? Colors.white : Colors.black87,
+                                    color: context.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black87,
                                   ),
                                 ),
                               ),
@@ -271,7 +279,9 @@ Page resource error:
                           ),
                           child: Icon(
                             Icons.refresh,
-                            color: context.isDarkMode ? Colors.white : Colors.black87,
+                            color: context.isDarkMode
+                                ? Colors.white
+                                : Colors.black87,
                           ),
                         ),
                         onTap: () {
@@ -280,7 +290,7 @@ Page resource error:
                       ),
                       GestureDetector(
                         behavior: HitTestBehavior.translucent,
-                        onTap: () => _launchURL(context),
+                        onTap: () => _launchURL(context), // safari icon
                         child: Container(
                           color: Colors.transparent,
                           constraints: const BoxConstraints(
@@ -292,8 +302,12 @@ Page resource error:
                               bottom: 2.0,
                             ),
                             child: Icon(
-                              Platform.isIOS ? FontAwesomeIcons.safari : FontAwesomeIcons.chrome,
-                              color: context.isDarkMode ? Colors.white : Colors.black54,
+                              Platform.isIOS
+                                  ? FontAwesomeIcons.safari
+                                  : FontAwesomeIcons.chrome,
+                              color: context.isDarkMode
+                                  ? Colors.white
+                                  : Colors.black54,
                               size: 19,
                             ),
                           ),
@@ -309,7 +323,9 @@ Page resource error:
                           ),
                           child: Icon(
                             Icons.close,
-                            color: context.isDarkMode ? Colors.white : Colors.black87,
+                            color: context.isDarkMode
+                                ? Colors.white
+                                : Colors.black87,
                           ),
                         ),
                         onTap: () => Navigator.maybePop(context),
@@ -325,18 +341,25 @@ Page resource error:
     );
   }
 
+  // launchURL
   void _launchURL(BuildContext context) async {
     if (_uri != null && await canLaunchUrl(_uri!)) {
       await launchUrl(
         _uri!,
         mode: LaunchMode.externalApplication,
+        // LaunchMode.platformDefault
+        // LaunchMode.inAppWebView  -- deeplink 활용 용이
+        // LaunchMode.externalApplication
+        // LaunchMode.externalNonBrowserApplication
       );
     } else {
       await MessageDialog('해당 url 은 열 수 없습니다.').show();
     }
   }
 
-  Future<NavigationDecision> _navigationDecision(NavigationRequest request) async {
+  // _navigationDecision 커스텀
+  Future<NavigationDecision> _navigationDecision(
+      NavigationRequest request) async {
     if (request.url.startsWith('https://www.youtube.com/')) {
       debugPrint('blocking navigation to ${request.url}');
       return NavigationDecision.prevent;
