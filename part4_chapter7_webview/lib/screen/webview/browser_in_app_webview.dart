@@ -58,6 +58,7 @@ class _BrowserState extends State<Browser> {
                   children: <Widget>[
                     Expanded(
                       child: InAppWebView(
+                        // parameter 다양
                         initialUrlRequest: URLRequest(
                           url: _uri,
                           headers: {},
@@ -72,7 +73,7 @@ class _BrowserState extends State<Browser> {
                           /// TODO: IOSInAppWebViewOptions
                           ios: IOSInAppWebViewOptions(
                             allowsInlineMediaPlayback: true,
-                            allowsLinkPreview: false,
+                            allowsLinkPreview: false, // ios 버튼 길게 눌렀을 때 뜨는 화면
                             sharedCookiesEnabled: true,
                           ),
                         ),
@@ -94,7 +95,8 @@ class _BrowserState extends State<Browser> {
                           }
                         },
                         onLoadError: (controller, url, code, message) {
-                          debugPrint('onLoadError url: $url, code: $code, message: $message');
+                          debugPrint(
+                              'onLoadError url: $url, code: $code, message: $message');
 
                           if (_isShowLoadingIndicator) {
                             setState(() {
@@ -183,7 +185,9 @@ class _BrowserState extends State<Browser> {
                                   ),
                                   child: Icon(
                                     Icons.arrow_back,
-                                    color: context.isDarkMode ? Colors.white : Colors.black87,
+                                    color: context.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black87,
                                   ),
                                 ),
                               ),
@@ -214,7 +218,9 @@ class _BrowserState extends State<Browser> {
                                   ),
                                   child: Icon(
                                     Icons.arrow_forward,
-                                    color: context.isDarkMode ? Colors.white : Colors.black87,
+                                    color: context.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black87,
                                   ),
                                 ),
                               ),
@@ -232,7 +238,9 @@ class _BrowserState extends State<Browser> {
                           ),
                           child: Icon(
                             Icons.refresh,
-                            color: context.isDarkMode ? Colors.white : Colors.black87,
+                            color: context.isDarkMode
+                                ? Colors.white
+                                : Colors.black87,
                           ),
                         ),
                         onTap: () {
@@ -255,8 +263,12 @@ class _BrowserState extends State<Browser> {
                               bottom: 2.0,
                             ),
                             child: Icon(
-                              Platform.isIOS ? FontAwesomeIcons.safari : FontAwesomeIcons.chrome,
-                              color: context.isDarkMode ? Colors.white : Colors.black54,
+                              Platform.isIOS
+                                  ? FontAwesomeIcons.safari
+                                  : FontAwesomeIcons.chrome,
+                              color: context.isDarkMode
+                                  ? Colors.white
+                                  : Colors.black54,
                               size: 19,
                             ),
                           ),
@@ -272,7 +284,9 @@ class _BrowserState extends State<Browser> {
                           ),
                           child: Icon(
                             Icons.close,
-                            color: context.isDarkMode ? Colors.white : Colors.black87,
+                            color: context.isDarkMode
+                                ? Colors.white
+                                : Colors.black87,
                           ),
                         ),
                         onTap: () => Navigator.maybePop(context),
@@ -300,7 +314,8 @@ class _BrowserState extends State<Browser> {
   }
 
   Future<NavigationActionPolicy?> _navigationActionPolicy(
-      InAppWebViewController controller, NavigationAction navigationAction) async {
+      InAppWebViewController controller,
+      NavigationAction navigationAction) async {
     debugPrint(
         'url: ${navigationAction.request.url}, isForMainFrame: ${navigationAction.isForMainFrame}');
     return NavigationActionPolicy.ALLOW;
