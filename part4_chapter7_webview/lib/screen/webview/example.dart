@@ -99,7 +99,7 @@ class _WebViewExampleState extends State<WebViewExample> {
     super.initState();
 
     /// TODO: OS Platform features
-    late final PlatformWebViewControllerCreationParams params;
+    late final PlatformWebViewControllerCreationParams params; // OS별 분기 처리
     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
       params = WebKitWebViewControllerCreationParams(
         allowsInlineMediaPlayback: true,
@@ -109,7 +109,8 @@ class _WebViewExampleState extends State<WebViewExample> {
       params = const PlatformWebViewControllerCreationParams();
     }
 
-    final WebViewController controller = WebViewController.fromPlatformCreationParams(params);
+    final WebViewController controller =
+        WebViewController.fromPlatformCreationParams(params);
     // #enddocregion platform_features
 
     controller
@@ -139,6 +140,7 @@ Page resource error:
           onNavigationRequest: (NavigationRequest request) {
             /// TODO: NavigationDecision
             if (request.url.startsWith('https://www.youtube.com/')) {
+              // 화면 이동 막음 -> 다른 로직 처리
               debugPrint('blocking navigation to ${request.url}');
               return NavigationDecision.prevent;
             }
@@ -165,7 +167,8 @@ Page resource error:
     // #docregion platform_features
     if (controller.platform is AndroidWebViewController) {
       AndroidWebViewController.enableDebugging(true);
-      (controller.platform as AndroidWebViewController).setMediaPlaybackRequiresUserGesture(false);
+      (controller.platform as AndroidWebViewController)
+          .setMediaPlaybackRequiresUserGesture(false);
     }
     // #enddocregion platform_features
 
@@ -342,13 +345,14 @@ class SampleMenu extends StatelessWidget {
     // with the WebView.
     /// TODO: User-Agent
     return webViewController.runJavaScript(
+      // **Toaster**
       'Toaster.postMessage("User Agent: " + navigator.userAgent);',
     );
   }
 
   Future<void> _onListCookies(BuildContext context) async {
-    final String cookies =
-        await webViewController.runJavaScriptReturningResult('document.cookie') as String;
+    final String cookies = await webViewController
+        .runJavaScriptReturningResult('document.cookie') as String;
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Column(
@@ -458,7 +462,8 @@ class SampleMenu extends StatelessWidget {
       return Container();
     }
     final List<String> cookieList = cookies.split(';');
-    final Iterable<Text> cookieWidgets = cookieList.map((String cookie) => Text(cookie));
+    final Iterable<Text> cookieWidgets =
+        cookieList.map((String cookie) => Text(cookie));
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       mainAxisSize: MainAxisSize.min,
@@ -468,7 +473,8 @@ class SampleMenu extends StatelessWidget {
 
   static Future<String> _prepareLocalFile() async {
     final String tmpDir = (await getTemporaryDirectory()).path;
-    final File indexFile = File(<String>{tmpDir, 'www', 'index.html'}.join(Platform.pathSeparator));
+    final File indexFile = File(
+        <String>{tmpDir, 'www', 'index.html'}.join(Platform.pathSeparator));
 
     await indexFile.create(recursive: true);
     await indexFile.writeAsString(kLocalExamplePage);
@@ -491,9 +497,11 @@ class NavigationControls extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () async {
             if (await webViewController.canGoBack()) {
+              // canGoBack
               await webViewController.goBack();
             } else {
               if (context.mounted) {
+                // **mounted**: 비분기 처리?
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('No back history item')),
                 );
