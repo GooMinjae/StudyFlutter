@@ -98,8 +98,8 @@ Page resource error:
     /// TODO: User-Agent
     await FkUserAgent.init();
     final packageInfo = await PackageInfo.fromPlatform();
-    await _controller
-        .setUserAgent('${FkUserAgent.webViewUserAgent} fastcampus(${packageInfo.version})');
+    await _controller.setUserAgent(
+        '${FkUserAgent.webViewUserAgent} fastcampus(${packageInfo.version})'); // 앱/브라우저 구분하여 커스텀
 
     /// TODO: http://example.com
     /// iOS - NSAppTransportSecurity
@@ -117,6 +117,7 @@ Page resource error:
   @override
   Widget build(BuildContext context) {
     return ConditionalWillPopScope(
+      // android back button ???
       /// TODO: onWillPop
       onWillPop: () => _willPop(),
       shouldAddCallback: !Platform.isIOS,
@@ -153,7 +154,8 @@ Page resource error:
     );
   }
 
-  Future<NavigationDecision> _navigationDecision(NavigationRequest request) async {
+  Future<NavigationDecision> _navigationDecision(
+      NavigationRequest request) async {
     final uri = Uri.parse(request.url);
     final bool isMainFrame = request.isMainFrame;
 
