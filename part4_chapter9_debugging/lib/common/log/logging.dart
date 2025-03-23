@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart' as logging;
 
+// logging
 class Logger {
   final _log = logging.Logger('ExampleLogger');
 
@@ -34,11 +35,10 @@ class Logger {
 
     debugPrint('Fibonacci(4) is: ${fibonacci(4)}');
 
-    logging.Logger.root.level = logging.Level.SEVERE; // skip logs less then severe.
+    logging.Logger.root.level =
+        logging.Level.SEVERE; // skip logs less then severe.
     debugPrint('Fibonacci(5) is: ${fibonacci(5)}');
 
     debugPrint('Fibonacci(-42) is: ${fibonacci(-42)}');
   }
 }
-
-
